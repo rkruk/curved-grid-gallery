@@ -1,0 +1,279 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curved Grid Gallery</title>
+    <!-- css file is mostly based on purecss.io set of modules -->
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/grids-responsive-old-ie-min.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/grids-responsive-min.css">
+    <!--<![endif]-->
+    <!-- Font Awesome are not necesary here but I want them for future sake. -->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    <!--[if lt IE 9]>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+      html, body {
+        background: rgb(253,205,121); /* background can be set as a one color ar as a gradient of two colors */
+        background: radial-gradient(ellipse at center, rgb(207,226,243) 1%, rgb(159,197,232) 100%);
+        height: 100%;
+        line-height: 1.7em;
+        font-size: 13px;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      label {
+        color: #34495e;
+      }
+      /* purecss image module */
+      .pure-img-responsive {
+        max-width: 100%;
+        height: auto;
+      }
+      .container {
+        height: 87%;
+        width: 100%;
+        perspective: 1200px; /* temporary hack - work in progress to keep tile elements within the container width */
+        transform: translateZ(0);
+      }
+      .container:hover .tile {
+        -webkit-filter: contrast(50%);
+      }
+      .container .tile:hover {
+        -webkit-filter: grayscale(0%);
+        opacity: 1;
+      }
+      .tile {
+        backface-visibility: hidden;
+        background: rgba(0, 0, 0, 0.1);
+        height: 30%;
+        margin: 1.6%;
+        position: absolute;
+        transition: all 0.4s ease-in-out;
+        transform-style: preserve-3d;
+        width: 30%;
+      }
+      /* Yeah.. about those percentages below... if something is stupid but works it is not syupid after all.. I think.. */
+      .tile:nth-of-type(3n+1) {
+        left: 1.6%;
+        transform: rotateY(20deg) translateZ(-30px);
+      }
+      .tile:nth-of-type(3n+2) {
+        left: 33%;
+        transform: translateZ(-90px);
+      }
+      .tile:nth-of-type(3n+3) {
+        left: 64.6%;
+        transform: rotateY(-20deg) translateZ(-30px);
+      }
+      .tile:nth-of-type(1n+1) {
+        top: 1.6%;
+      }
+      .tile:nth-of-type(1n+4) {
+        top: 33%;
+      }
+      .tile:nth-of-type(1n+7) {
+        top: 64.6%;
+      }
+      .tile.active {
+        height: 96.8%;
+        left: 0;
+        top: 0;
+        transform: rotateY(0) translateZ(0);
+        width: 96.8%;
+        z-index: 3;
+      }
+      .pure-u-1,
+      .pure-u-1-1,
+      .pure-u-1-3,
+      .pure-u-2-3,
+      .pure-u-3-3 {
+        display: inline-block;
+        *display: inline;
+        zoom: 1;
+        letter-spacing: normal;
+        word-spacing: normal;
+        vertical-align: top;
+        text-rendering: auto;
+      }
+      .pure-u-1-3 {
+        width: 33.3333%;
+        *width: 33.3023%;
+      }
+      .pure-u-2-3 {
+        width: 66.6667%;
+        *width: 66.6357%;
+      }
+      .pure-u-1,
+      .pure-u-1-1,
+      .pure-u-3-3 {
+        width: 100%;
+      }
+      .l-box {
+        padding: 1em;
+      }
+      .l-box-lrg {
+        padding: 2em;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+      }
+      .is-center {
+        text-align: center;
+      }
+      .pure-button {
+        background-color: #1f8dd6;
+        color: white;
+        padding: 0.5em 2em;
+        border-radius: 5px;
+      }
+      a.pure-button-primary {
+        background: white;
+        color: #1f8dd6;
+        border-radius: 5px;
+        font-size: 120%;
+      }
+      .home-menu {
+        padding: 0.5em;
+        text-align: center;
+        box-shadow: 0 1px 1px rgba(0,0,0, 0.10);
+      }
+      .home-menu {
+        background: #2d3e50;
+      }
+      .pure-menu.pure-menu-fixed {
+        border-bottom: none;
+        /* It require a higher z-index here because of the scroll-over effect. */
+        z-index: 4;
+      }
+      .home-menu .pure-menu-heading {
+        color: white;
+        font-weight: 400;
+        font-size: 120%;
+      }
+      .home-menu .pure-menu-selected a {
+        color: white;
+      }
+      .home-menu a {
+        color: #6FBEF3;
+      }
+      .home-menu li a:hover,
+      .home-menu li a:focus {
+        background: none;
+        border: none;
+        color: #AECFE5;
+      }
+      .content-wrapper {
+        /* Required for the "scroll-over" effect */
+        position: absolute;
+        top: 6%;
+        width: 100%;
+        min-height: 100%;
+        z-index: 2;
+      }
+      .content {
+        padding: 1em 1em 3em;
+      }
+      .footer {
+        color: white;
+        background: #2d3e50;
+        position: fixed;
+        bottom: 0;
+        height: 5%;
+        width: 100%;
+      }
+      a:link {
+        color: white;
+        text-decoration: none;
+      }
+      a:visited {
+        color: #1f8dd6;
+      }
+      a:hover {
+        color: #6FBEF3;
+      }
+      a:active {
+        color: white;
+      }
+      /* Media Queries */
+      @media (min-width: 48em) {
+        body {
+          font-size: 16px;
+        }
+        .home-menu {
+          text-align: left;
+        }
+        .home-menu ul {
+          float: right;
+        }
+        .l-box-lrg {
+          border: none;
+        }
+      }
+      <div class="preloader">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </style>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+    <script>
+      jQuery(function($) {
+        $('.tile').click(function() {
+          var active = $('.tile.active');
+          active.removeClass('active');
+          if (active[0] !== this) {
+            $(this).addClass('active');
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="header">
+      <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+        <a class="pure-menu-heading" href="">Curved Grid Gallery</a>
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item pure-menu-selected"><a href="#" class="pure-menu-link">Home</a></li>
+            <li class="pure-menu-item"><a href="#" class="pure-menu-link">Example Link</a></li>
+            <li class="pure-menu-item"><a href="#" class="pure-menu-link">Example Link 2</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container">
+      <div class="content-wrapper">
+        <div class="content">
+          <div class="pure-g">
+            <div class="pure-u-1">
+              <img src="img/frame2.jpg" class="tile">
+              <img src="img/frame4.jpg" class="tile">
+              <img src="img/frame18.jpg" class="tile">
+              <img src="img/frame3.jpg" class="tile">
+              <img src="img/frame5.jpg" class="tile">
+              <img src="img/frame6.jpg" class="tile">
+              <img src="img/frame7.jpg" class="tile">
+              <img src="img/frame13.jpg" class="tile">
+              <img src="img/frame10.jpg" class="tile">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="is-center">
+          <p>2020 &copy <a href="https://kruk.co" target="_blank">KRUK.C0</a></p>
+      </div>
+    </div>
+  </body>
+</html>
